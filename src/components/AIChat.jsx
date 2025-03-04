@@ -1,24 +1,24 @@
 
 import React, { useState } from 'react';
-import '../styles/ai-chat.css';
 
 const AIChat = () => {
     const [chat, setChat] = useState([]);
     const [input, setInput] = useState('');
 
-    const handleSend = () => {
-        setChat([...chat, { sender: 'You', text: input }, { sender: 'AI', text: 'This is a dummy AI response.' }]);
+    const sendMessage = () => {
+        const newChat = [...chat, { user: 'You', text: input }, { user: 'AI', text: 'This is a dummy response.' }];
+        setChat(newChat);
         setInput('');
     };
 
     return (
         <div className="ai-chat">
-            <h2>Ask the AI Advisor</h2>
-            <div className="chat-output">
-                {chat.map((msg, idx) => <p key={idx}><strong>{msg.sender}:</strong> {msg.text}</p>)}
+            <h2>AI Advisor Chat</h2>
+            <div className="chat-box">
+                {chat.map((msg, index) => <p key={index}><strong>{msg.user}:</strong> {msg.text}</p>)}
             </div>
-            <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask a question..." />
-            <button onClick={handleSend}>Send</button>
+            <input value={input} onChange={(e) => setInput(e.target.value)} />
+            <button onClick={sendMessage}>Send</button>
         </div>
     );
 };

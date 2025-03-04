@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import '../styles/login.css';
 
 const LoginPage = ({ onLogin }) => {
     const [email, setEmail] = useState('');
@@ -14,7 +13,7 @@ const LoginPage = ({ onLogin }) => {
 
     return (
         <div className="login-container">
-            <h2>Login to Academic Advising System</h2>
+            <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />

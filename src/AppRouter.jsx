@@ -7,9 +7,7 @@ import Dashboard from './pages/Dashboard';
 const AppRouter = () => {
     const [user, setUser] = useState(null);
 
-    const handleLogin = (credentials) => {
-        setUser(credentials);
-    };
+    const handleLogin = (credentials) => setUser(credentials);
 
     return (
         <BrowserRouter>
