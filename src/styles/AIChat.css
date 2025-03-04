@@ -1,0 +1,44 @@
+
+.ai-chat {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 95%;
+    max-width: 1200px;
+    margin-top: 20px;
+    transition: box-shadow 0.3s;
+}
+
+.ai-chat:hover {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.chat-box {
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input {
+    padding: 10px;
+    margin-top: 10px;
+    width: calc(100% - 22px);
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #003f7f;
+}
