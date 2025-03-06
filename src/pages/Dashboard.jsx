@@ -22,11 +22,11 @@ const Dashboard = () => {
     const generatePlan = () => {
         const plans = {
             computer_science: [
-                'AI & Machine Learning',
-                'Software Engineering',
-                'Cybersecurity',
-                'Data Structures',
-                'Operating Systems'
+                'CMPSC 131: Programming Concepts',
+                'CMPSC 132: Object-Oriented Programming',
+                'CMPSC 360: Discrete Mathematics',
+                'CMPSC 462: Data Structures And Algorithms',
+                'CMPSC 487W: Software Engineering And Design',
             ],
             information_technology: [
                 'Database Management',
@@ -80,7 +80,7 @@ const Dashboard = () => {
 
                 {/* Result Section */}
                 <div className="result-section">
-                    <h3>Recommended Courses:</h3>
+                    <h3>Semester X:</h3>
                     {coursePlan.length > 0 ? (
                         <ul>
                             {coursePlan.map((course, index) => (
