@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar';
 import AIChat from '../components/AIChat';
 import '../styles/Dashboard.css';
 
-
 const Dashboard = () => {
     const [major, setMajor] = useState('computer_science');
     const [uploadedFile, setUploadedFile] = useState(null);
@@ -69,27 +68,6 @@ const Dashboard = () => {
                         accept=".pdf"
                         onChange={handleFileUpload}
                     />
-
-                    <button onClick={generatePlan}>Generate Course Plan</button>
-
-                    {/* File upload feedback */}
-                    {uploadedFile && (
-                        <p>Uploaded: {uploadedFile.name}</p>
-                    )}
-                </div>
-
-                {/* Result Section */}
-                <div className="result-section">
-                    <h3>Semester X:</h3>
-                    {coursePlan.length > 0 ? (
-                        <ul>
-                            {coursePlan.map((course, index) => (
-                                <li key={index}>{course}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No courses recommended yet. Please generate a plan.</p>
-                    )}
                 </div>
 
                 {/* AI Chat Section */}

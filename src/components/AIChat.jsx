@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
+import { queryLLM } from '../apiService';
 import '../styles/AIChat.css';
-
 
 const AIChat = () => {
     const [chat, setChat] = useState([]);
     const [input, setInput] = useState('');
 
-    const sendMessage = () => {
-        const newChat = [
-            ...chat,
-            { user: 'You', text: input },
-            { user: 'AI', text: 'This is a placeholder response.' }
-        ];
+    const sendMessage = async () => {
+        const newChat = [...chat, { user: 'You', text: input }];
         setChat(newChat);
         setInput('');
+
+        try {
+            const response = await queryLLM(input);
+            setChat([...newChat, { user: 'AI', text: response }]);
+        } catch (error) {
+            setChat([...newChat, { user: 'AI', text: 'Error querying LLM' }]);
+        }
     };
 
     return (
