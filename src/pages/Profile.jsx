@@ -149,7 +149,7 @@ const Profile = () => {
                 value={userType}
                 onChange={(e) => setUserType(e.target.value)}
               />
-            </Grid>cls
+            </Grid>
             
           </Grid>
         </CardContent>
