@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { queryLLM } from '../apiService';
+import { queryLLM } from '../services/apiService';
 import '../styles/AIChat.css';
 
 const AIChat = () => {
