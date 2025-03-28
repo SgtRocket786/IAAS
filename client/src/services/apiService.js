@@ -1,14 +1,46 @@
-// // filepath: c:\Users\hamma\source\repos\IAAS\IAAS\src\apiService.js
-// import axios from 'axios';
+const API_URL = 'http://localhost:5000/llm'; // Flask backend URL
 
-// const API_URL = 'http://localhost:3000/query';  // Adjust the URL if needed
+export const queryLLM = async (question) => {
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ question }),
+        });
 
-// export const queryLLM = async (question) => {
-//     try {
-//         const response = await axios.post(API_URL, { question });
-//         return response.data.response;
-//     } catch (error) {
-//         console.error('Error querying LLM:', error);
-//         throw error;
-//     }
-// };
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.response;
+    } catch (error) {
+        console.error('Error querying LLM:', error);
+        throw error;
+    }
+};
+
+// Test API call to process numbers, would replace with passing pdf to LLM python project
+export const processNumbers = async (num1, num2) => {
+    try {
+        const response = await fetch(`${API_URL}/process`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ num1, num2 }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error processing numbers:', error);
+        throw error;
+    }
+};

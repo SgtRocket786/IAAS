@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar';
 import AIChat from '../components/AIChat';
 import '../styles/Dashboard.css';
 
+import { processNumbers } from '../services/apiService';
+
 const Dashboard = () => {
     const [major, setMajor] = useState('computer_science');
     const [uploadedFile, setUploadedFile] = useState(null);
@@ -46,6 +48,38 @@ const Dashboard = () => {
         setCoursePlan(plans[major] || []);
     };
 
+
+    // testing api calls
+    const [result, setResult] = useState(null);
+    const [error, setError] = useState("");
+
+    const handleProcess = async () => {
+        console.log("Processing numbers: 4 and 15");
+        try {
+            const response = await fetch("http://127.0.0.1:5000/llm/process", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ num1: 4, num2: 15 }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setResult(data.result);
+                setError(null);
+                console.log("Result:", data.result);
+            } else {
+                setError(data.error);
+                setResult(null);
+                console.log("Error:", data.error);
+            }
+        } catch (err) {
+            setError("Failed to connect to the server.");
+            setResult(null);
+        }
+    };
+
     return (
         <div>
             <Navbar />
@@ -72,6 +106,10 @@ const Dashboard = () => {
 
                 {/* AI Chat Section */}
                 <AIChat />
+            </div>
+            {/* TEMPORARY BUTTON TO TEST API */}
+            <div>
+            <button onClick={handleProcess}>test api call (temporary)</button>
             </div>
         </div>
     );
