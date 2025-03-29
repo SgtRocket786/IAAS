@@ -1,13 +1,13 @@
 const API_URL = 'http://localhost:5000/llm'; // Flask backend URL
 
-export const queryLLM = async (question) => {
+export const generateResponse = async (userQuestion) => {
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch("http://127.0.0.1:5000/llm/generate-response", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ question }),
+            body: JSON.stringify({ user_question: userQuestion }),
         });
 
         if (!response.ok) {
@@ -15,32 +15,10 @@ export const queryLLM = async (question) => {
         }
 
         const data = await response.json();
-        return data.response;
+        console.log("Response from LLM:", data);
+        return data.graduation_plan; // Extract the graduation plan from the response
     } catch (error) {
         console.error('Error querying LLM:', error);
-        throw error;
-    }
-};
-
-// Test API call to process numbers, would replace with passing pdf to LLM python project
-export const processNumbers = async (num1, num2) => {
-    try {
-        const response = await fetch(`${API_URL}/process`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ num1, num2 }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error processing numbers:', error);
         throw error;
     }
 };

@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
-import { queryLLM } from '../services/apiService';
 import '../styles/AIChat.css';
+import { generateResponse } from '../services/apiService';
 
-const AIChat = () => {
+const AIChat = ({ isChatEnabled }) => {
     const [chat, setChat] = useState([]);
     const [input, setInput] = useState('');
 
-    const sendMessage = async () => {
-        const newChat = [...chat, { user: 'You', text: input }];
-        setChat(newChat);
-        setInput('');
-
+    const sendQuestion = async () => {
         try {
-            const response = await queryLLM(input);
-            setChat([...newChat, { user: 'AI', text: response }]);
+            const graduationPlan = await generateResponse(input);
+            setChat([...chat, { user: 'You', text: input }, { user: 'AI', text: graduationPlan }]);
+            setInput('');
         } catch (error) {
-            setChat([...newChat, { user: 'AI', text: 'Error querying LLM' }]);
+            console.error('Error handling send:', error);
         }
     };
 
@@ -28,7 +25,7 @@ const AIChat = () => {
                 ))}
             </div>
             <input value={input} onChange={(e) => setInput(e.target.value)} />
-            <button onClick={sendMessage}>Send</button>
+            <button disabled={!isChatEnabled} onClick={sendQuestion}>Send</button>
         </div>
     );
 };

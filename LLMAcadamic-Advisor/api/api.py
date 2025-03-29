@@ -2,25 +2,28 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from LLM.testFunctions import additionMethod
+from LLM.main import aggregate_and_generate_response
 
 app = Flask(__name__)
-CORS(app) # Enable CORS for all routes
+CORS(app)
 
-# Sample api call format
-@app.route('/llm/process', methods=['POST'])
-def process_data():
-    data = request.json
-    num1 = data.get('num1')
-    num2 = data.get('num2')
+@app.route('/llm/generate-response', methods=['POST'])
+def generate_graduation_plan():
+    try:
+        data = request.get_json()
+        user_question = data.get('user_question', '')
 
-    if num1 is None or num2 is None:
-        return jsonify({"error": "num1 and num2 are required"}), 400
+        if not user_question:
+            return jsonify({"error": "User question is required"}), 400
 
-    result = additionMethod(num1, num2)  # Call the addition function
-    return jsonify({"message": "Processed successfully", "result": result})
+        result = aggregate_and_generate_response(user_question)
+
+        return jsonify({"graduation_plan": result}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
