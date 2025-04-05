@@ -1,13 +1,13 @@
-
 .ai-chat {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 95%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 100%; /* Ensure it fits within the viewport */
     margin-top: 20px;
     transition: box-shadow 0.3s;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 .ai-chat:hover {
@@ -21,12 +21,17 @@
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 input {
     padding: 10px;
     margin-top: 10px;
-    width: calc(100% - 22px);
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px; 
+    box-sizing: border-box;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 button {

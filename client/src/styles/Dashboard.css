@@ -1,41 +1,58 @@
-
 .dashboard-container {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 95%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 100%; /* Ensure it fits within the viewport */
     margin-top: 20px;
     transition: box-shadow 0.3s;
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 .dashboard-container:hover {
     box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.form-section, .result-section {
+.planner, .form-section, .result-section {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 100%;
-    max-width: 800px;
+    max-width: 100%; /* Ensure it fits within the viewport */
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Add spacing between elements */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    font-size: 14px;
+    color: #333; /* Consistent text color */
 }
 
-select, input, button {
+select, input, button, textarea {
     padding: 10px;
     margin: 5px 0;
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box; /* Ensure consistent sizing */
+}
+
+input[type="file"] {
+    padding: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
 }
 
 button {
@@ -43,8 +60,29 @@ button {
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
 }
 
 button:hover {
     background-color: #003f7f;
+}
+
+textarea.graduation-plan-output {
+    width: 100%;
+    max-width: 100%; /* Ensure it fits within the viewport */
+    height: 200px;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }

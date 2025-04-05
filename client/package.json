@@ -2,12 +2,11 @@
   "name": "iaas-complete",
   "version": "1.0.0",
   "main": "src/index.js",
-
   "_comments": {
     "start": "The start script runs the React development server. 'BROWSER=none' prevents the browser from opening automatically since it already opens."
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -34,5 +33,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

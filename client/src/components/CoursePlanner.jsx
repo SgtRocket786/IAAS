@@ -1,30 +1,73 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import '../styles/Dashboard.css'; // Ensure consistent styling
 
-const CoursePlanner = () => {
+const CoursePlanner = ({ graduationPlan, setGraduationPlan, setLoading, loading, setIsChatEnabled }) => {
     const [major, setMajor] = useState('computer_science');
-    const [result, setResult] = useState(null);
+    const [uploadedFile, setUploadedFile] = useState(null);
 
-    const generatePlan = () => {
-        const plans = {
-            computer_science: ['AI & Machine Learning', 'Software Engineering', 'Cybersecurity'],
-            information_technology: ['Database Management', 'Networking', 'Cloud Computing'],
-            engineering: ['Thermodynamics', 'Control Systems', 'Structural Analysis']
-        };
-        setResult(plans[major]);
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        setUploadedFile(file);
+        setIsChatEnabled(true);
+    };
+
+    const generateGraduationPlan = async () => {
+        if (!uploadedFile) {
+            alert('Please upload your transcript before generating a graduation plan.');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await axios.post('http://127.0.0.1:5000/llm/generate-response', {
+                user_question: 'Generate a Graduation Plan based on the attached What-If Report',
+            });
+
+            setGraduationPlan(response.data.graduation_plan || 'No plan generated.');
+        } catch (error) {
+            console.error('Error generating graduation plan:', error);
+            setGraduationPlan('An error occurred while generating the graduation plan.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <div className="planner">
-            <h2>Course Planner</h2>
-            <select value={major} onChange={(e) => setMajor(e.target.value)}>
+            <h3>Course Planner</h3>
+            <label htmlFor="major">Select Your Major:</label>
+            <select id="major" value={major} onChange={(e) => setMajor(e.target.value)}>
                 <option value="computer_science">Computer Science</option>
                 <option value="information_technology">Information Technology</option>
                 <option value="engineering">Engineering</option>
             </select>
-            <button onClick={generatePlan}>Generate Plan</button>
-            {result && (
-                <ul>{result.map(course => <li key={course}>{course}</li>)}</ul>
-            )}
+
+            {/* File Upload Section */}
+            <div className="form-section">
+                <label htmlFor="transcript">Upload Your Transcript (PDF):</label>
+                <input
+                    type="file"
+                    id="transcript"
+                    accept=".pdf"
+                    onChange={handleFileUpload}
+                />
+
+                {/* Generate Graduation Plan Button */}
+                <button onClick={generateGraduationPlan} disabled={loading}>
+                    {loading ? 'Generating...' : 'Generate Graduation Plan'}
+                </button>
+
+                {/* Graduation Plan Output */}
+                {graduationPlan && (
+                    <textarea
+                        readOnly
+                        value={graduationPlan}
+                        className="graduation-plan-output"
+                        placeholder="Graduation plan will appear here..."
+                    />
+                )}
+            </div>
         </div>
     );
 };
