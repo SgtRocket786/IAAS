@@ -11,7 +11,6 @@ const Dashboard = () => {
 
     return (
         <div>
-            <Navbar />
             <div className="dashboard-container">
                 <h2>Academic Planner</h2>
 

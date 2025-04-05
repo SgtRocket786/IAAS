@@ -32,7 +32,7 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/'); // Redirect to the login page
   };
 
   const handleBackToDashboard = () => {
@@ -150,7 +150,6 @@ const Profile = () => {
                 onChange={(e) => setUserType(e.target.value)}
               />
             </Grid>
-            
           </Grid>
         </CardContent>
         <CardActions sx={{ justifyContent: 'center', py: 2 }}>
