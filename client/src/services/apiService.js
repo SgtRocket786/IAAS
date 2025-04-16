@@ -22,3 +22,22 @@ export const generateResponse = async (userQuestion) => {
         throw error;
     }
 };
+
+export const setupEnvironment = async (formData) => {
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/llm/setup-environment`, {
+            method: 'POST',
+            body: formData, // Send the FormData object
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.message; // Return the success message from the backend
+    } catch (error) {
+        console.error('Error setting up environment:', error);
+        throw error;
+    }
+};

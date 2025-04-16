@@ -1,27 +1,40 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/Dashboard.css'; // Ensure consistent styling
+import { setupEnvironment } from '../services/apiService';
 
-const CoursePlanner = ({ graduationPlan, setGraduationPlan, setLoading, loading, setIsChatEnabled }) => {
-    const [major, setMajor] = useState('computer_science');
-    const [uploadedFile, setUploadedFile] = useState(null);
+const CoursePlanner = () => {
+    const [graduationPlan, setGraduationPlan] = useState(''); // Centralized state
+    const [loading, setLoading] = useState(false);
+    const [generateEnabled, setGenerateEnable] = useState(false);
+    const [showInitializing, setShowInitializing] = useState(false);
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
-        setUploadedFile(file);
-        setIsChatEnabled(true);
+        initializeEnvironment(file);
+    };
+    
+    const initializeEnvironment = async (file) => {
+        try {
+            setShowInitializing(true)
+            const formData = new FormData();
+            formData.append('transcript', file); 
+    
+            const message = await setupEnvironment(formData); 
+            console.log('Environment initialized:', message);
+            setGenerateEnable(true);
+            setShowInitializing(false)
+        } catch (error) {
+            console.error('Error initializing environment:', error);
+            setGraduationPlan('An error occurred while generating the graduation plan.');
+        }
     };
 
     const generateGraduationPlan = async () => {
-        if (!uploadedFile) {
-            alert('Please upload your transcript before generating a graduation plan.');
-            return;
-        }
-
         setLoading(true);
         try {
             const response = await axios.post('http://127.0.0.1:5000/llm/generate-response', {
-                user_question: 'Generate a Graduation Plan based on the attached What-If Report',
+                user_question: 'Generate a Graduation Plan based on my major',
             });
 
             setGraduationPlan(response.data.graduation_plan || 'No plan generated.');
@@ -32,16 +45,11 @@ const CoursePlanner = ({ graduationPlan, setGraduationPlan, setLoading, loading,
             setLoading(false);
         }
     };
-
+   
     return (
         <div className="planner">
             <h3>Course Planner</h3>
             <label htmlFor="major">Select Your Major:</label>
-            <select id="major" value={major} onChange={(e) => setMajor(e.target.value)}>
-                <option value="computer_science">Computer Science</option>
-                <option value="information_technology">Information Technology</option>
-                <option value="engineering">Engineering</option>
-            </select>
 
             {/* File Upload Section */}
             <div className="form-section">
@@ -54,8 +62,9 @@ const CoursePlanner = ({ graduationPlan, setGraduationPlan, setLoading, loading,
                 />
 
                 {/* Generate Graduation Plan Button */}
-                <button onClick={generateGraduationPlan} disabled={loading}>
-                    {loading ? 'Generating...' : 'Generate Graduation Plan'}
+                <button onClick={generateGraduationPlan} disabled={!generateEnabled || loading}>
+                    {/* {loading ? 'Generating...' : 'Generate Graduation Plan'} */}
+                    {showInitializing ? 'Initializing...' : loading ? 'Generating...': 'Generate Graduation Plan'}
                 </button>
 
                 {/* Graduation Plan Output */}
