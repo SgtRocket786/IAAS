@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Input } from '@mui/material';
 
 const AdminDashboard = ({ onRegister }) => {
+    const [name, setName] = useState('');
+    const [sex, setSex] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,13 +27,16 @@ const AdminDashboard = ({ onRegister }) => {
 
 
         try {
-            const response = await axios.post('http://localhost:5000/api/register', { email, password, role });
+            const response = await axios.post('http://localhost:5000/api/register', { name, email, password, role, sex, dateOfBirth });
 
-            setSuccess(response.data.message); // "User registered successfully"
+            setSuccess(response.data.message);
             localStorage.setItem('token', response.data.token);
+            setName('');
             setEmail('');
             setPassword('');
             setConfirmPassword('');
+            setDateOfBirth('');
+            setSex('');
             navigate('/login');
         } catch (err) {
             setError(err.response?.data?.error || 'Registration failed');
@@ -44,6 +51,29 @@ const AdminDashboard = ({ onRegister }) => {
                 {error && <p className="error">{error}</p>}
                 {success && <p className="success">{success}</p>}
                 <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Full Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                    <select
+                        required
+                        value={sex}
+                        onChange={(e) => setSex(e.target.value)}>
+                        <option value="">Select Sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input
+                        placeholder="Date of Birth"
+                        type="date"
+                        required
+                        value={dateOfBirth}
+                        onChange={(e) => setDateOfBirth(e.target.value)}
+                    />
                     <input
                         type="email"
                         placeholder="Email"
@@ -68,6 +98,7 @@ const AdminDashboard = ({ onRegister }) => {
                     <select
                         value={role}
                         onChange={(e) => setRole(e.target.value)}>
+                        <option value="">Select Role</option>
                         <option value="student">Student</option>
                         <option value="faculty">Faculty</option>
                         <option value="admin">Admin</option>

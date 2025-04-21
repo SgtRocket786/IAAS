@@ -2,11 +2,11 @@ const express = require('express');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const cors = require('cors'); // Import cors
+const cors = require('cors');
 
 const app = express();
-app.use(express.json()); // Parse JSON bodies
-app.use(cors()); // Enable CORS
+app.use(express.json());
+app.use(cors());
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -24,7 +24,7 @@ connection.connect((err) => {
 });
 
 app.post('/api/register', async (req, res) => {
-    const { email, password, role } = req.body;
+    const { name, email, password, role, sex, dateOfBirth } = req.body;
     console.log("Role from client:", role);
 
     const allowedRoles = ['student', 'faculty', 'admin'];
@@ -35,12 +35,12 @@ app.post('/api/register', async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const query = 'INSERT INTO users (email, password, role) VALUES (?, ?, ?)';
+        const query = 'INSERT INTO users (name, email, password, role, sex, dateOfBirth) VALUES (?, ?, ?, ?, ?, ?)';
 
         console.log("SQL Query:", query);
-        console.log("Query Values:", [email, hashedPassword, role]);
+        console.log("Query Values:", [name, email, hashedPassword, role, sex, dateOfBirth]);
 
-        connection.query(query, [email, hashedPassword, role], (err, results) => {
+        connection.query(query, [name, email, hashedPassword, role, sex, dateOfBirth], (err, results) => {
             if (err) {
                 console.error('Error inserting user: ', err.sqlMessage);
                 return res.status(500).json({ error: 'Registration failed' });
@@ -73,7 +73,7 @@ app.post('/api/login', async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
-            res.json({ message: 'Login successful', user: { id: user.id, email: user.email, role: user.role } }); // Send user data
+            res.json({ message: 'Login successful', user: { id: user.id, name: user.name, email: user.email, role: user.role, sex: user.sex, dateOfBirth: user.dateOfBirth } }); // Send user data
         } else {
             res.status(401).json({ error: 'Invalid credentials' });
         }

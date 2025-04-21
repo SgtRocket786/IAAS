@@ -48,7 +48,7 @@ const AppRouter = () => {
           path="/profile"
           element={
             user ? (
-              <Profile />
+              <Profile onLogout={handleLogout}/>
             ) : (
               <Navigate to="/" />
             )

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Avatar,
@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
-const Profile = () => {
+const Profile = ({onLogout}) => {
   const navigate = useNavigate();
   const [profilePic, setProfilePic] = useState('https://via.placeholder.com/150');
   const [name, setName] = useState('');
@@ -31,8 +31,21 @@ const Profile = () => {
     setProfilePic(imageUrl);
   };
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setName(user.name);
+      setUserType(user.role);
+      setSex(user.sex);
+      setDateOfBirth(user.dateOfBirth);
+    }
+  }, []);
+
   const handleLogout = () => {
-    navigate('/'); // Redirect to the login page
+    localStorage.clear();
+    onLogout();
+    navigate('/');
   };
 
   const handleBackToDashboard = () => {
@@ -108,47 +121,44 @@ const Profile = () => {
           <Divider sx={{ my: 2 }} />
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Full Name"
-                variant="filled"
-                color="primary"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Type your name..."
-              />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Full Name
+                </Typography>
+                <Typography variant="body1" sx={{ pl: 1, pt: 0.5 }}>
+                  {name}
+                </Typography>
+              </Box>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Date of Birth"
-                type="date"
-                variant="filled"
-                color="primary"
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                InputLabelProps={{ shrink: true }}
-              />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Date of Birth
+                </Typography>
+                <Typography variant="body1" sx={{ pl: 1, pt: 0.5 }}>
+                  {dateOfBirth}
+                </Typography>
+              </Box>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Sex"
-                variant="filled"
-                color="primary"
-                value={sex}
-                onChange={(e) => setSex(e.target.value)}
-              />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Sex
+                </Typography>
+                <Typography variant="body1" sx={{ pl: 1, pt: 0.5 }}>
+                  {sex}
+                </Typography>
+              </Box>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="User Type"
-                variant="filled"
-                color="primary"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-              />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Role
+                </Typography>
+                <Typography variant="body1" sx={{ pl: 1, pt: 0.5 }}>
+                  {userType}
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </CardContent>

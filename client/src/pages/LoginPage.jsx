@@ -15,9 +15,10 @@ const LoginPage = ({ onLogin }) => {
         try {
             const response = await axios.post('http://localhost:5000/api/login', { email, password });
             const user = response.data.user;
-            onLogin(user);  // Set user in state
-            localStorage.setItem('token', response.data.token);  // Store token
+            onLogin(user);
+            localStorage.setItem('token', response.data.token);
             localStorage.setItem('role', user.role);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
 
             if (user.role === 'student') navigate('/student-dashboard');
             else if (user.role === 'faculty') navigate('/faculty-dashboard');

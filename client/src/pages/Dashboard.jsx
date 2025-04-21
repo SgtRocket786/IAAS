@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import AIChat from '../components/AIChat';
-import CoursePlanner from '../components/CoursePlanner'; // Import CoursePlanner
+import CoursePlanner from '../components/CoursePlanner';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-    const [graduationPlan, setGraduationPlan] = useState(''); // Centralized state
+    const [graduationPlan, setGraduationPlan] = useState('');
     const [loading, setLoading] = useState(false);
     const [isChatEnabled, setIsChatEnabled] = useState(false);
 
