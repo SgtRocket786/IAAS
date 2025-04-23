@@ -1,97 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
-import '../styles/Dashboard.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Input } from '@mui/material';
 
-const AdminDashboard = () => {
-    const [users, setUsers] = useState([]);
-    const [newUser, setNewUser] = useState({ name: '', email: '', role: 'student' });
+const AdminDashboard = ({ onRegister }) => {
+    const [name, setName] = useState('');
+    const [sex, setSex] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [role, setRole] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        // Fetch existing users from the backend
-        const fetchUsers = async () => {
-            try {
-                const response = await fetch('http://127.0.0.1:5000/users');
-                const data = await response.json();
-                setUsers(data);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setSuccess('');
 
-        fetchUsers();
-    }, []);
-
-    const handleAddUser = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:5000/users', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newUser),
-            });
-
-            if (response.ok) {
-                const addedUser = await response.json();
-                setUsers([...users, addedUser]);
-                setNewUser({ name: '', email: '', role: 'student' });
-            }
-        } catch (error) {
-            console.error('Error adding user:', error);
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
         }
-    };
 
-    const handleDeleteUser = async (id) => {
+
         try {
-            const response = await fetch(`http://127.0.0.1:5000/users/${id}`, {
-                method: 'DELETE',
-            });
+            const response = await axios.post('http://localhost:5001/api/register', { name, email, password, role, sex, dateOfBirth });
 
-            if (response.ok) {
-                setUsers(users.filter((user) => user.id !== id));
-            }
-        } catch (error) {
-            console.error('Error deleting user:', error);
+            setSuccess(response.data.message);
+            localStorage.setItem('token', response.data.token);
+            setName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            setDateOfBirth('');
+            setSex('');
+            navigate('/login');
+        } catch (err) {
+            setError(err.response?.data?.error || 'Registration failed');
         }
     };
 
     return (
-        <div>
-            <div className="dashboard-container">
-                <h2>Admin Dashboard</h2>
-                <div className="form-section">
-                    <h3>Add New User</h3>
+        <div className="dashboard-container">
+            <h2>Admin Dashboard</h2>
+            <div className="form-section">
+                <h3>Add New User</h3>
+                {error && <p className="error">{error}</p>}
+                {success && <p className="success">{success}</p>}
+                <form onSubmit={handleSubmit}>
                     <input
                         type="text"
-                        placeholder="Name"
-                        value={newUser.name}
-                        onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                        placeholder="Full Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                    <select
+                        required
+                        value={sex}
+                        onChange={(e) => setSex(e.target.value)}>
+                        <option value="">Select Sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <input
+                        placeholder="Date of Birth"
+                        type="date"
+                        required
+                        value={dateOfBirth}
+                        onChange={(e) => setDateOfBirth(e.target.value)}
                     />
                     <input
                         type="email"
                         placeholder="Email"
-                        value={newUser.email}
-                        onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
                     />
                     <select
-                        value={newUser.role}
-                        onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                    >
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}>
+                        <option value="">Select Role</option>
                         <option value="student">Student</option>
                         <option value="faculty">Faculty</option>
                         <option value="admin">Admin</option>
                     </select>
-                    <button onClick={handleAddUser}>Add User</button>
-                </div>
-                <div className="result-section">
-                    <h3>Existing Users</h3>
-                    <ul>
-                        {users.map((user) => (
-                            <li key={user.id}>
-                                {user.name} ({user.role}) - {user.email}
-                                <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                    <button type='submit'>Add User</button>
+                </form>
             </div>
         </div>
     );

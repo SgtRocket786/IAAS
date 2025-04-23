@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python Debugger: Flask",
             "type": "debugpy",
@@ -26,6 +27,13 @@
             "cwd": "${workspaceFolder}/client"
         },
         {
+            "command": "node server.js",
+            "name": "Run server.js",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}/client/server"
+        },
+        {
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",
@@ -38,6 +46,7 @@
             "name": "start client, chrome, and flask",
             "configurations": [
                 "Run npm start",
+                "Run server.js",
                 "Launch Chrome",
                 "Python Debugger: Flask"
             ]
