@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const cors = require('cors');
@@ -9,9 +9,9 @@ app.use(express.json());
 app.use(cors());
 
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'williams#5',
+    host: '192.168.1.200',
+    user: 'groupmate',
+    password: 'password123',
     database: 'Advising'
 });
 
