@@ -32,7 +32,7 @@ const AIChat = ({ disableButton }) => {
         <div className="ai-chat">
             <h2>AI Advisor Chat</h2>
             <div className="chat-box">
-                <p><strong>AI:</strong> Start by uploading your What-If Report.</p>
+                <p><strong>AI:</strong> Start by generating your Graduation Plan.</p>
                 {chat.map((msg, index) => (
                     <p key={index}><strong>{msg.user}:</strong> {msg.text}</p>
                 ))}
