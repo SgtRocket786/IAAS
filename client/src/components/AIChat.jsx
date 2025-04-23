@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import '../styles/AIChat.css';
 import { generateResponse } from '../services/apiService';
 
-const AIChat = () => {
+const AIChat = ({ disableButton }) => {
     const [chat, setChat] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false); // State to track loading
     const [error, setError] = useState(''); // State to track errors
-
+    
     const sendQuestion = async () => {
         try {
             setError(''); // Clear any previous errors
@@ -44,7 +44,7 @@ const AIChat = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your question here..."
             />
-            <button disabled={isLoading} onClick={sendQuestion}>
+            <button disabled={isLoading || disableButton} onClick={sendQuestion}>
                 Send
             </button>
         </div>

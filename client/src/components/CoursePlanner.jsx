@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../styles/Dashboard.css'; // Ensure consistent styling
 import { setupEnvironment } from '../services/apiService';
 
-const CoursePlanner = () => {
+const CoursePlanner = ({ setDisableButton }) => {
     const [graduationPlan, setGraduationPlan] = useState(''); // Centralized state
     const [loading, setLoading] = useState(false);
     const [generateEnabled, setGenerateEnable] = useState(false);
@@ -38,6 +38,7 @@ const CoursePlanner = () => {
             });
 
             setGraduationPlan(response.data.graduation_plan || 'No plan generated.');
+            setDisableButton(false);
         } catch (error) {
             console.error('Error generating graduation plan:', error);
             setGraduationPlan('An error occurred while generating the graduation plan.');
