@@ -5,8 +5,8 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from LLM.main import aggregate_and_generate_response
-from LLM.main import setup_environment
+from LLM.main_copy  import aggregate_and_generate_response
+from LLM.main_copy import setup_environment
 
 app = Flask(__name__)
 CORS(app)
