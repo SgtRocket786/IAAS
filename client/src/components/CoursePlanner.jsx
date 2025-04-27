@@ -50,7 +50,6 @@ const CoursePlanner = ({ setDisableButton }) => {
     return (
         <div className="planner">
             <h3>Course Planner</h3>
-            <label htmlFor="major">Select Your Major:</label>
 
             {/* File Upload Section */}
             <div className="form-section">
