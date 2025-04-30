@@ -9,10 +9,10 @@ app.use(express.json());
 app.use(cors());
 
 const connection = mysql.createConnection({
-    host: '192.168.1.200',
-    user: 'groupmate',
-    password: 'password123',
-    database: 'Advising'
+    host: 'host_server',
+    user: 'your_username',
+    password: 'your_password',
+    database: 'db_name'
 });
 
 connection.connect((err) => {
